@@ -121,7 +121,7 @@ npm run preview
 
 Ứng dụng PWA bắt buộc phải chạy qua giao thức **HTTPS** để Service Worker và Manifest có thể kích hoạt tính năng cài đặt.
 
-### Cách 1: Triển khai qua Vercel (Khuyên dùng)
+### Cách 1: Triển khai qua Vercel
 
 1. Đẩy mã nguồn lên một GitHub Repository công khai (Public).
 2. Đăng nhập vào [Vercel](https://vercel.com/) $\rightarrow$ Chọn **Add New...** $\rightarrow$ **Project**.
@@ -140,41 +140,6 @@ vercel
 
 ---
 
-### Cách 2: Triển khai qua Cloudflare Pages
-
-1. Đăng nhập vào [Cloudflare Dashboard](https://dash.cloudflare.com/) $\rightarrow$ Chọn **Workers & Pages** $\rightarrow$ **Create Application** $\rightarrow$ **Pages** $\rightarrow$ **Connect to Git**.
-2. Chọn Repository GitHub của bạn.
-3. Cấu hình Build settings:
-   - **Framework preset**: `Vite`
-   - **Build command**: `npm run build`
-   - **Build output directory**: `dist`
-4. Nhấn **Save and Deploy**. Cloudflare Pages sẽ tự động cấp SSL HTTPS miễn phí toàn cầu.
-
----
-
-## 📱 Lộ Trình Tuần Tiếp Theo: Đóng Gói Thành APK Android Bằng Capacitor
-
-Vì ứng dụng được tổ chức với thư mục đầu ra chuẩn `dist/`, việc tích hợp sang **Capacitor Bridge** trong tuần kế tiếp sẽ cực kỳ đơn giản:
-
-```bash
-# 1. Cài đặt Capacitor Core và CLI
-npm install @capacitor/core @capacitor/cli @capacitor/android
-
-# 2. Khởi tạo cấu hình Capacitor
-npx cap init "VKU Field Survey" "vn.edu.vku.survey" --web-dir "dist"
-
-# 3. Tạo thư mục Android Native
-npx cap add android
-
-# 4. Build web và đồng bộ vào Android
-npm run build
-npx cap sync android
-
-# 5. Mở dự án bằng Android Studio để xuất file APK
-npx cap open android
-```
-
----
 
 ## 👥 Nhóm Tác Giả & Bản Quyền
 
