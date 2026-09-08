@@ -1,0 +1,48 @@
+Yêu cầu đầy đủ của bài tập lớn đầu tiên (Mini-Project 1: VKU Field Survey App) trong tài liệu bài giảng PWA bao gồm:
+
+1. Mục tiêu & Định hướng sản phẩm (Goal)
+Tên ứng dụng: VKU Field Survey App (Ứng dụng khảo sát hiện trường cơ sở vật chất VKU).
+
+Mục tiêu cốt lõi: Xây dựng một biểu mẫu khảo sát/kiểm tra hiện trường các cơ sở vật chất trong khuôn viên trường theo mô hình Offline-First, đảm bảo hoạt động tin cậy ngay cả khi hoàn toàn không có kết nối mạng (Zero network connectivity).
+
+2. Các yêu cầu kỹ thuật cần triển khai (Technical Requirements)
+Dựa trên toàn bộ kiến thức và chuẩn PWA được yêu cầu trong bài học, sản phẩm cần đáp ứng:
+
+Tính năng PWA & Cài đặt (Installability & Standalone):
+
+Có cấu hình manifest.json chuẩn để cho phép cài đặt lên màn hình chính (Add to Home Screen) với biểu tượng ứng dụng riêng.
+
+Khởi chạy ở chế độ hiển thị toàn màn hình độc lập (standalone display mode), không có thanh địa chỉ trình duyệt.
+
+Giao diện tương thích tốt, co giãn mượt trên mọi kích thước màn hình di động (Responsive).
+
+Service Worker & Chiến lược Cache (App Shell & Caching Strategies):
+
+Thiết lập vòng đời Service Worker chuẩn: Đăng ký (Register), cài đặt (Install), kích hoạt/dọn dẹp cache cũ (Activate) và can thiệp điều hướng request (Fetch).
+
+Lưu trữ trước (Pre-cache) các tài nguyên bộ khung ứng dụng (App Shell: HTML, CSS, JS, Icons) bằng chiến lược Cache-First.
+
+Áp dụng hợp lý các chiến lược caching (Network-First, Stale-While-Revalidate,...) cho dữ liệu mạng và hiển thị.
+
+Lưu trữ dữ liệu Offline (IndexedDB):
+
+Sử dụng IndexedDB làm kho lưu trữ bất đồng bộ tại client để lưu trữ các bản ghi/bản nháp khảo sát (inspection records/offline drafts) khi mất mạng.
+
+Đồng bộ hóa dữ liệu (Background Sync / Offline Queue):
+
+Tích hợp hàng đợi đồng bộ dữ liệu (Offline queue) kết hợp với Background Sync API hoặc cơ chế đồng bộ tự động gửi dữ liệu về máy chủ ngay khi thiết bị có kết nối trở lại.
+
+Bảo mật:
+
+Bắt buộc triển khai và phục vụ qua giao thức HTTPS.
+
+(Lưu ý: Sang tuần tiếp theo, ứng dụng PWA này sẽ được đóng gói thành file APK Android bằng Capacitor Bridge, do đó cần cấu hình và thiết kế cấu trúc gọn gàng, tương thích tốt với môi trường Web View/Capacitor).
+
+3. Sản phẩm bàn giao (Key Deliverables)
+Dự án yêu cầu nộp đủ 3 phần:
+
+Live Demo (HTTPS link): Đường link ứng dụng đã được deploy trực tiếp qua Cloudflare Pages hoặc Vercel.
+
+Mã nguồn (GitHub Repository): Đường link repository GitHub ở chế độ công khai (Public), cấu trúc code sạch sẽ (clean code) và có file README.md hướng dẫn thiết lập/cài đặt đầy đủ.
+
+Báo cáo kỹ thuật (Technical Report): File PDF ngắn gọn từ 2 đến 4 trang trình bày về giải pháp kỹ thuật, kiến trúc offline, các chiến lược cache đã áp dụng và kết quả thực nghiệm của ứng dụng.
