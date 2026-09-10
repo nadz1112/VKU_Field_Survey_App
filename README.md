@@ -141,8 +141,4 @@ vercel
 ---
 
 
-## 👥 Nhóm Tác Giả & Bản Quyền
-
 - **Học phần**: Phát triển Ứng dụng Đa Nền tảng (PWA & Hybrid Mobile Apps)
-- **Đơn vị**: Khoa Công nghệ Thông tin & Truyền thông - Trường Đại học CNTT & TT Việt - Hàn (VKU)
-- **Giấy phép**: MIT License.
