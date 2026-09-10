@@ -10,8 +10,8 @@
 * **Team Members:**
   1. Lê Xuân Hoài Nam — Student ID: 23IT175 — Role: Toàn bộ Kiến trúc Capacitor Native, Tích hợp Plugins (Camera, GPS, Notification, Filesystem), Đóng gói APK & CI/CD — Contribution: 100%
 * **🔗 Live Demo URL (PWA):** [https://vku-field-survey-app.vercel.app](https://vku-field-survey-app.vercel.app)
-* **📱 Android APK Package:** File `FieldSurveyApp-debug.apk` (7.23 MB) trong thư mục gốc dự án
-* **💻 GitHub Repository:** [https://github.com/nadz1112/VKU_Field_Survey_App](https://github.com/nadz1112/VKU_Field_Survey_App) *(Nhánh: `feature/capacitor-android-apk` và `main`)*
+* **📱 Android APK Package:** [Tải trực tiếp FieldSurveyApp-debug.apk (7.23 MB)](https://github.com/nadz1112/VKU_Field_Survey_App/raw/feature/capacitor-android-apk/FieldSurveyApp-debug.apk)
+* **💻 GitHub Repository:** [nadz1112/VKU_Field_Survey_App at feature/capacitor-android-apk](https://github.com/nadz1112/VKU_Field_Survey_App/tree/feature/capacitor-android-apk) *(Nhánh chuyên biệt Capacitor Android Native & APK)*
 * **🎥 Video Demo (Optional):** [https://youtu.be/xxx](https://youtu.be/xxx) *(Đã kiểm thử thực tế trên thiết bị Android và bộ test tự động)*
 
 ---
