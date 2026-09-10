@@ -32,3 +32,10 @@ dist-ssr/
 
 # Vercel
 .vercel
+
+# Android build outputs & APKs
+*.apk
+*.aab
+android/.gradle/
+android/app/build/
+android/local.properties

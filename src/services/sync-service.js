@@ -5,6 +5,7 @@ import {
   getSurvey,
   getAllSurveys
 } from '../db/database.js';
+import { notifySyncSuccess } from './notification-service.js';
 
 // Trạng thái đồng bộ hiện tại
 let isSyncing = false;
@@ -142,6 +143,15 @@ export async function syncAllPending() {
 
   isSyncing = false;
   const remainingQueue = await getSyncQueue();
+
+  if (successCount > 0) {
+    try {
+      await notifySyncSuccess(successCount);
+    } catch (notifErr) {
+      console.warn('[Sync Service] Lỗi gửi thông báo:', notifErr);
+    }
+  }
+
   notifySyncListeners({
     isSyncing: false,
     isOnline: isOnline(),

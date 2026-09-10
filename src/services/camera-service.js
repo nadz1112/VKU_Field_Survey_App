@@ -1,8 +1,52 @@
-// Dịch vụ xử lý máy ảnh & nén ảnh hiện trường
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Capacitor } from '@capacitor/core';
+import { saveTempPhotoFile } from './filesystem-service.js';
 
 /**
- * Nén hình ảnh về kích thước tối đa maxDimension (1024px) và chất lượng quality (0.8)
- * Giúp tối ưu lưu trữ trong IndexedDB và truyền dữ liệu khi mạng yếu.
+ * Chụp ảnh hiện trường bằng Capacitor Camera Plugin
+ * Mở trực tiếp ứng dụng Máy ảnh gốc (Native Camera) trên điện thoại Android
+ */
+export async function capturePhotoFromCamera() {
+  try {
+    const photo = await Camera.getPhoto({
+      quality: 80,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl, // Lấy Data URL (Base64 JPEG)
+      source: CameraSource.Camera, // Mở thẳng máy ảnh gốc
+      width: 1024, // Giới hạn chiều rộng tối đa 1024px để tối ưu bộ nhớ
+      correctOrientation: true,
+    });
+
+    const dataUrl = photo.dataUrl;
+    const approxSizeKb = Math.round((dataUrl.length * 3) / 4 / 1024);
+
+    // Lưu tệp ảnh tạm vào bộ nhớ thiết bị qua Capacitor Filesystem
+    let localFilePath = null;
+    try {
+      localFilePath = await saveTempPhotoFile(dataUrl);
+    } catch (e) {
+      console.warn('Lỗi lưu file tạm:', e);
+    }
+
+    return {
+      dataUrl,
+      format: photo.format || 'jpeg',
+      sizeKb: approxSizeKb,
+      capturedAt: new Date().toISOString(),
+      filePath: localFilePath
+    };
+  } catch (error) {
+    // Nếu người dùng nhấn nút Back/Hủy trên máy ảnh
+    if (error.message && (error.message.includes('User cancelled') || error.message.includes('cancelled'))) {
+      return null;
+    }
+    console.error('[Camera] Lỗi khi chụp ảnh:', error);
+    throw error;
+  }
+}
+
+/**
+ * Hàm hỗ trợ nén ảnh cho web/fallback
  */
 export async function compressImage(file, maxDimension = 1024, quality = 0.8) {
   return new Promise((resolve, reject) => {
@@ -32,10 +76,7 @@ export async function compressImage(file, maxDimension = 1024, quality = 0.8) {
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Chuyển sang Base64 Data URL JPEG
         const dataUrl = canvas.toDataURL('image/jpeg', quality);
-        
-        // Tính kích thước xấp xỉ
         const approxSizeKb = Math.round((dataUrl.length * 3) / 4 / 1024);
 
         resolve({

@@ -7,6 +7,7 @@ import { renderSyncManager } from './components/sync-manager.js';
 import { renderAboutView } from './components/about-view.js';
 import { initDetailModal } from './components/modal-detail.js';
 import { showToast } from './components/toast.js';
+import { initNotificationService } from './services/notification-service.js';
 
 // DOM Elements
 const networkBadge = document.getElementById('header-network-badge');
@@ -101,8 +102,9 @@ async function bootstrap() {
   // 1. Đăng ký Service Worker
   registerServiceWorker();
 
-  // 2. Khởi tạo dịch vụ đồng bộ & mạng
+  // 2. Khởi tạo dịch vụ đồng bộ & mạng & thông báo
   initSyncService();
+  initNotificationService();
   updateNetworkUI(isOnline());
 
   window.addEventListener('online', () => {

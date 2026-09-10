@@ -6,7 +6,7 @@ import {
 } from '../data/vku-data.js';
 import { saveSurvey, addToSyncQueue, getSetting, saveSetting } from '../db/database.js';
 import { getCurrentLocation } from '../services/location-service.js';
-import { compressImage } from '../services/camera-service.js';
+import { capturePhotoFromCamera } from '../services/camera-service.js';
 import { isOnline, syncAllPending, registerBackgroundSync } from '../services/sync-service.js';
 import { showToast } from './toast.js';
 
@@ -108,25 +108,17 @@ export async function initSurveyForm(containerElement, onSurveySaved) {
           </div>
         </div>
 
-        <!-- Chụp & Đính kèm ảnh hiện trường -->
+        <!-- Chụp & Đính kèm ảnh hiện trường bằng Native Camera -->
         <div class="form-group">
-          <label class="form-label">Hình ảnh minh chứng hiện trường (Chụp trực tiếp hoặc tải ảnh)</label>
-          <input 
-            type="file" 
-            id="camera-file-input" 
-            accept="image/*" 
-            capture="environment" 
-            multiple 
-            style="display: none;" 
-          />
+          <label class="form-label">Hình ảnh minh chứng hiện trường (Chụp trực tiếp từ máy ảnh)</label>
           <div class="photo-upload-container" id="photo-dropzone">
             <div class="photo-upload-placeholder">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                 <circle cx="12" cy="13" r="4"></circle>
               </svg>
-              <div style="font-weight: 600; font-size: 0.9rem;">Bấm để Chụp ảnh hoặc Tải ảnh hiện trường</div>
-              <div style="font-size: 0.75rem; color: var(--text-muted);">Tự động nén ảnh tối ưu lưu trữ Offline trong IndexedDB</div>
+              <div style="font-weight: 600; font-size: 0.9rem;">📷 Bấm để Mở Máy Ảnh Chụp Hiện Trường</div>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Sử dụng Capacitor Camera Native Plugin, tự động tối ưu lưu trữ</div>
             </div>
           </div>
           <div class="photo-preview-grid" id="photo-preview-grid"></div>
@@ -165,7 +157,6 @@ export async function initSurveyForm(containerElement, onSurveySaved) {
   const gpsDisplay = containerElement.querySelector('#gps-display');
   const getGpsBtn = containerElement.querySelector('#btn-get-gps');
   const photoDropzone = containerElement.querySelector('#photo-dropzone');
-  const cameraInput = containerElement.querySelector('#camera-file-input');
   const previewGrid = containerElement.querySelector('#photo-preview-grid');
   const saveDraftBtn = containerElement.querySelector('#btn-save-draft');
   const surveyorInput = containerElement.querySelector('#surveyor-name');
@@ -223,25 +214,18 @@ export async function initSurveyForm(containerElement, onSurveySaved) {
     }
   });
 
-  // Sự kiện chọn/chụp ảnh
-  photoDropzone.addEventListener('click', () => {
-    cameraInput.click();
-  });
-
-  cameraInput.addEventListener('change', async (e) => {
-    const files = Array.from(e.target.files);
-    if (!files || files.length === 0) return;
-
-    for (const file of files) {
-      try {
-        const compressed = await compressImage(file, 1024, 0.8);
-        currentPhotos.push(compressed);
-      } catch (err) {
-        showToast('Lỗi xử lý hình ảnh.', 'danger');
+  // Sự kiện chụp ảnh hiện trường trực tiếp qua Capacitor Camera
+  photoDropzone.addEventListener('click', async () => {
+    try {
+      const photo = await capturePhotoFromCamera();
+      if (photo) {
+        currentPhotos.push(photo);
+        renderPhotoPreviews(previewGrid);
+        showToast('Đã chụp và lưu ảnh hiện trường thành công!', 'success');
       }
+    } catch (err) {
+      showToast('Lỗi khi mở máy ảnh: ' + (err.message || err), 'danger');
     }
-    renderPhotoPreviews(previewGrid);
-    cameraInput.value = '';
   });
 
   function renderPhotoPreviews(gridEl) {
