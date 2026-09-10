@@ -10,4 +10,8 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
   },
+  test: {
+    environment: 'happy-dom',
+    setupFiles: ['./tests/setup.js'],
+  },
 });
